@@ -1,0 +1,29 @@
+.custom-button {
+    background: var(--primary-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 0.75rem;
+    box-shadow: var(--primary-color) 0px 2px 5px;
+    color: var(--main-white);
+    font-size: 1.4rem;
+    font-weight: 600;
+    width: 100%;
+    height: 3.5rem;
+}
+
+.custom-button:hover {
+    background: var(--secondary-color-3);
+    border: 1px solid var(--secondary-color-3);
+    box-shadow: var(--secondary-color-3) 0px 2px 5px;
+    color: var(--secondary-color);
+}
+
+.custom-input {
+    border-radius: 0.75rem;
+    width: 100%;
+    height: 3.5rem;
+}
+
+.ant-form-item label {
+    font-size: 1rem;
+    line-height: 100%;
+}

@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "removeComments": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "esModuleInterop": true,
+    "target": "es6",
+    "sourceMap": true,
+    "incremental": true,
+    "allowSyntheticDefaultImports": true,
+    "noLib": false,
+    "noImplicitAny": false,
+    "outDir": "./dist",
+    "baseUrl": "./src",
+    "typeRoots": ["node_modules/@types", "types"],
+    "skipLibCheck": true,
+    "types": ["node"],
+    "stripInternal": true,
+    "paths": {
+      "@/*": ["src/*"],
+      "@/interfaces/*": ["./src/interfaces/*"],
+      "@/extensions/*": ["./src/extensions/*"]
+    }
+  },
+  "ts-node": {
+    "transpileOnly": true,
+    "files": true
+  },
+  "include": ["src/**/*.ts"],
+  "compileOnSave": false,
+  "exclude": [
+    "node_modules",
+    "coverage",
+    "document",
+    "dist",
+    "backup",
+    "logs",
+    "redis",
+    "reports",
+    "script",
+    "signature",
+    "signOrder",
+    "jdbc",
+    "templateReport",
+    "test",
+    "uploads",
+    "*.gql",
+    "**/*.spec.ts"
+  ]
+}
