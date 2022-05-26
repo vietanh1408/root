@@ -1,11 +1,10 @@
 import CustomButton from "@/components/Forms/Button";
-import CustomCheckbox from "@/components/Forms/Checkbox";
 import CustomInput from "@/components/Forms/Input";
 import { Form } from "antd";
 import Link from "next/link";
 import React from "react";
 
-const login: React.FC = () => {
+const register: React.FC = () => {
   const onFinish = (value: any) => {
     console.log("value: ", value);
   };
@@ -15,7 +14,7 @@ const login: React.FC = () => {
   };
 
   return (
-    <div className="login-wrapper">
+    <div className="register-wrapper">
       <div className="container py-3">
         <h1 className="text-center">ADMINISTRATOR</h1>
         <Form
@@ -40,6 +39,22 @@ const login: React.FC = () => {
           />
 
           <CustomInput
+            name="email"
+            label="E-mail"
+            size="large"
+            rules={[
+              {
+                type: "email",
+                message: "The input is not valid E-mail",
+              },
+              {
+                required: true,
+                message: "E-mail is required",
+              },
+            ]}
+          />
+
+          <CustomInput
             name="password"
             label="Password"
             type="password"
@@ -51,12 +66,38 @@ const login: React.FC = () => {
               },
             ]}
           />
-          <CustomCheckbox name="remember" text="Remember me" />
 
-          <CustomButton text="Login" block />
+          <CustomInput
+            name="confirm-password"
+            label="Confirm password"
+            type="password"
+            size="large"
+            dependencies={["password"]}
+            hasFeedback
+            rules={[
+              {
+                required: true,
+                message: "Confirm password is required",
+              },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  if (!value || getFieldValue("password") === value) {
+                    return Promise.resolve();
+                  }
+                  return Promise.reject(
+                    new Error(
+                      "The two passwords that you entered do not match!"
+                    )
+                  );
+                },
+              }),
+            ]}
+          />
+
+          <CustomButton text="Register" block />
 
           <div className="w-100 d-flex justify-content-center align-items-center">
-            <Link href={"/register"}>Register</Link>
+            <Link href={"/login"}>Login</Link>
           </div>
         </Form>
       </div>
@@ -64,4 +105,4 @@ const login: React.FC = () => {
   );
 };
 
-export default login;
+export default register;

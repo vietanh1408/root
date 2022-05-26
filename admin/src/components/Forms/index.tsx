@@ -24,13 +24,18 @@ const CustomForm: React.FC = () => {
         onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
-        <CustomInput name="name" label="Name" />
+        <CustomInput name="name" label="Name" size="large" />
 
-        <CustomInput name="password" label="Password" type="password" />
+        <CustomInput
+          name="password"
+          label="Password"
+          type="password"
+          size="large"
+        />
 
         <CustomCheckbox name="remember" text="Remember me" />
 
-        <CustomButton text="Start Now" />
+        <CustomButton text="Login" block />
       </Form>
     </div>
   );

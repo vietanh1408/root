@@ -11,7 +11,12 @@ const CustomButton: React.FC<CustomButtonProps> = (
 ) => {
   return (
     <Form.Item wrapperCol={{ offset: 8, span: 8 }}>
-      <Button htmlType="submit" {...props} className="custom-button">
+      <Button
+        htmlType="submit"
+        {...props}
+        className="custom-button"
+        size="large"
+      >
         {props.text}
       </Button>
     </Form.Item>

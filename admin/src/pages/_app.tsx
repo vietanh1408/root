@@ -15,9 +15,7 @@ type AppPropsType = AppProps & {
 
 function App(props: AppPropsType) {
   const { Component } = props;
-
   const { isAuthenticated } = useAuthContext();
-
   const router = useRouter();
 
   useIsomorphicLayoutEffect(() => {
@@ -28,7 +26,9 @@ function App(props: AppPropsType) {
 
   return (
     <AuthContextProvider>
-      <Layout {...props} />
+      {!(Component.defaultProps?.protected && !isAuthenticated) && (
+        <Layout {...props} />
+      )}
     </AuthContextProvider>
   );
 }

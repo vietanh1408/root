@@ -15,6 +15,8 @@ type CustomInputProps = InputNumberProps &
     disabled?: boolean;
     className?: string;
     readonly?: boolean;
+    dependencies?: string[];
+    hasFeedback?: boolean;
   };
 
 const renderInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
@@ -86,7 +88,13 @@ const renderInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
 
 const CustomInput: React.FC<CustomInputProps> = (props: CustomInputProps) => {
   return (
-    <Form.Item label={props.label} name={props.name} rules={props.rules}>
+    <Form.Item
+      label={props.label}
+      name={props.name}
+      rules={props.rules}
+      dependencies={props.dependencies}
+      hasFeedback={props.hasFeedback}
+    >
       {renderInput(props)}
     </Form.Item>
   );
