@@ -1,11 +1,12 @@
-import AuthContextProvider from "src/utils/context";
+import { Provider } from "react-redux";
+import { store } from "src/redux/store";
 import styles from "../styles/Home.module.css";
 
 const Home = () => {
   return (
-    <AuthContextProvider>
+    <Provider store={store}>
       <div className={styles.container}>HOME</div>
-    </AuthContextProvider>
+    </Provider>
   );
 };
 
