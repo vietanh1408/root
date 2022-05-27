@@ -1,13 +1,45 @@
 import CustomButton from "@/components/Forms/Button";
 import CustomCheckbox from "@/components/Forms/Checkbox";
 import CustomInput from "@/components/Forms/Input";
-import { Form } from "antd";
+import { Form, notification } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import message from "src/constants/message";
+import { AuthAction, fetchLogin } from "src/redux/actions/auth";
+import { RootState } from "src/redux/reducers";
 
-const login: React.FC = () => {
-  const onFinish = (value: any) => {
-    console.log("value: ", value);
+export interface LoginInput {
+  username: string;
+  password: string;
+  remember: boolean;
+}
+
+const Login: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const { loading } = useSelector((state: RootState) => state.auth);
+
+  const onFinish = async (value: LoginInput) => {
+    dispatch({ type: AuthAction.LOGGING_IN });
+
+    const response = await fetchLogin(value);
+
+    if (response && response.success) {
+      notification.success({
+        message: message.loginSuccess,
+      });
+      dispatch({ type: AuthAction.LOGIN_SUCCESS, payload: response });
+      router.push("/");
+    } else {
+      notification.error({
+        message: response.message,
+      });
+      dispatch({ type: AuthAction.LOGIN_FAIL });
+    }
   };
 
   const onFinishFailed = (value: any) => {
@@ -28,7 +60,7 @@ const login: React.FC = () => {
           autoComplete="off"
         >
           <CustomInput
-            name="name"
+            name="username"
             label="Name"
             size="large"
             rules={[
@@ -53,7 +85,7 @@ const login: React.FC = () => {
           />
           <CustomCheckbox name="remember" text="Remember me" />
 
-          <CustomButton text="Login" block />
+          <CustomButton text="Login" block loading={loading} />
 
           <div className="w-100 d-flex justify-content-center align-items-center">
             <Link href={"/register"}>Register</Link>
@@ -64,4 +96,4 @@ const login: React.FC = () => {
   );
 };
 
-export default login;
+export default Login;

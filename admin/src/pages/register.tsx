@@ -1,12 +1,44 @@
 import CustomButton from "@/components/Forms/Button";
 import CustomInput from "@/components/Forms/Input";
-import { Form } from "antd";
+import { Form, notification } from "antd";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+import message from "src/constants/message";
+import { AuthAction, fetchRegister } from "src/redux/actions/auth";
+import { RootState } from "src/redux/reducers";
 
-const register: React.FC = () => {
-  const onFinish = (value: any) => {
-    console.log("value: ", value);
+export interface RegisterInput {
+  username: string;
+  email: string;
+  password: string;
+}
+
+const Register: React.FC = () => {
+  const dispatch = useDispatch();
+
+  const router = useRouter();
+
+  const { loading } = useSelector((state: RootState) => state.auth);
+
+  const onFinish = async (value: RegisterInput) => {
+    dispatch({ type: AuthAction.REGISTERING });
+
+    const response = await fetchRegister(value);
+
+    if (response && response.success) {
+      notification.success({
+        message: message.registerSuccess,
+      });
+      dispatch({ type: AuthAction.REGISTER_SUCCESS, payload: response });
+      router.push("/");
+    } else {
+      notification.error({
+        message: response.message,
+      });
+      dispatch({ type: AuthAction.REGISTER_FAIL });
+    }
   };
 
   const onFinishFailed = (value: any) => {
@@ -27,7 +59,7 @@ const register: React.FC = () => {
           autoComplete="off"
         >
           <CustomInput
-            name="name"
+            name="username"
             label="Name"
             size="large"
             rules={[
@@ -94,7 +126,7 @@ const register: React.FC = () => {
             ]}
           />
 
-          <CustomButton text="Register" block />
+          <CustomButton text="Register" block loading={loading} />
 
           <div className="w-100 d-flex justify-content-center align-items-center">
             <Link href={"/login"}>Login</Link>
@@ -105,4 +137,4 @@ const register: React.FC = () => {
   );
 };
 
-export default register;
+export default Register;

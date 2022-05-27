@@ -24,8 +24,12 @@ class AuthController implements Controller {
     res: Response,
     next: NextFunction
   ) => {
-    const { username, password } = req.body as RegisterInput
-    return await this.authService.register({ username, password }, res, next)
+    const { username, password, email } = req.body as RegisterInput
+    return await this.authService.register(
+      { username, password, email },
+      res,
+      next
+    )
   }
 
   private login = async (

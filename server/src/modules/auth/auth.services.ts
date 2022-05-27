@@ -19,16 +19,28 @@ export class AuthService {
     next: NextFunction
   ) {
     try {
-      const { username, password } = input
+      const { email, username, password } = input
 
-      const existedUser = await User.findOne({
+      console.log('input: ', input)
+
+      const existedUsername = await User.findOne({
         where: {
           username
         }
       })
 
-      if (existedUser) {
+      if (existedUsername) {
         next(new HttpException(404, errorMessages.existedUser))
+      }
+
+      const existedEmail = await User.findOne({
+        where: {
+          email
+        }
+      })
+
+      if (existedEmail) {
+        next(new HttpException(404, errorMessages.existedEmail))
       }
 
       const hashedPassword = await argon2.hash(password)
@@ -62,12 +74,20 @@ export class AuthService {
     try {
       const { password, username } = input
 
-      const user = (await User.findOne({
+      console.log('input: ', input)
+
+      if (!username) {
+        next(new HttpException(400, errorMessages.existedUser))
+      }
+
+      const user: User = await User.findOne({
         where: {
           username,
           role: RoleEnum.Customer
         }
-      })) as User
+      })
+
+      console.log('user: ', user)
 
       if (!user) {
         next(new HttpException(400, errorMessages.notFoundUser))
