@@ -33,7 +33,7 @@ const Login: React.FC = () => {
         message: message.loginSuccess,
       });
       dispatch({ type: AuthAction.LOGIN_SUCCESS, payload: response });
-      router.push("/");
+      router.push("/products");
     } else {
       notification.error({
         message: response.message,

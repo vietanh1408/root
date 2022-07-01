@@ -1,4 +1,5 @@
 import jwtDecode, { JwtPayload } from "jwt-decode";
+import { ACCESS_TOKEN, REFRESH_TOKEN } from "src/constants/local-storage";
 
 const JWTManager = () => {
   const LOGOUT_EVENT_NAME = "jwt-logout";
@@ -32,19 +33,21 @@ const JWTManager = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            refreshToken:
-              "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MDkwYjFkNy02MGE5LTRhMDUtYWVjMi1jNzgwODhmOWVlZWMiLCJyb2xlIjowLCJpYXQiOjE2NTA3Nzg4NDksImV4cCI6MTY1MzM3MDg0OX0.a9hat1bY5enUkh-CzbaK4Brl3X9EaRWP91m_LU-NATo",
+            refreshToken: localStorage.getItem(REFRESH_TOKEN),
           }),
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI4MDkwYjFkNy02MGE5LTRhMDUtYWVjMi1jNzgwODhmOWVlZWMiLCJyb2xlIjowLCJpYXQiOjE2NTA3Nzg4NDksImV4cCI6MTY1MDc3OTE0OX0.TgLmq7u6xIrDlJOUVbli3gc7OF9mSZy05J0i5PMeepQ`,
+            Authorization: `Bearer ${localStorage.getItem(ACCESS_TOKEN)}`,
           },
         }
       );
+
       const data = (await response.json()) as {
         success: boolean;
         accessToken: string;
       };
+
+      console.log("accessToken: ", data.accessToken);
 
       setToken(data.accessToken);
       return true;

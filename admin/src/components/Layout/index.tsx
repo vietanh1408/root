@@ -1,28 +1,58 @@
 import { useAuthContext } from "@/utils/context";
-import { AppProps } from "next/app";
-import React, { useEffect, useState } from "react";
+import { GetServerSideProps } from "next";
+import { useRouter } from "next/router";
+import React, { useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
+import Login from "src/pages/login";
+import { AppPropsType } from "src/pages/_app";
+import { fetchRefreshToken } from "src/redux/actions/auth";
+import { wrapper } from "src/redux/store";
 
-const Layout: React.FC<AppProps> = ({ Component, pageProps }: AppProps) => {
+const Layout: React.FC<AppPropsType> = ({
+  Component,
+  pageProps,
+}: AppPropsType) => {
   const [loading, setLoading] = useState<boolean>(true);
   const { checkAuth, isAuthenticated } = useAuthContext();
 
-  useEffect(() => {
-    const authenticate = async () => {
-      await checkAuth();
-      setLoading(false);
-    };
+  const router = useRouter();
+
+  const authenticate = async () => {
+    await checkAuth();
+    setLoading(false);
+  };
+
+  useLayoutEffect(() => {
+    console.log("useLayoutEffect isAuthenticated: ", isAuthenticated);
 
     authenticate();
-  }, [checkAuth]);
+  }, [isAuthenticated, router, Component.defaultProps]);
+
+  useEffect(() => {
+    console.log("useEffect isAuthenticated: ", isAuthenticated);
+    if (!isAuthenticated) {
+      router.push("/login");
+    }
+  }, [isAuthenticated]);
 
   if (loading) return <h1>Loading...</h1>;
 
   return (
     <React.Fragment>
       {isAuthenticated && <div>Header</div>}
-      <Component {...pageProps} />
+      {!(Component.defaultProps?.protected && !isAuthenticated) && (
+        <Component {...pageProps} />
+      )}
     </React.Fragment>
   );
 };
+
+// export const getServerSideProps: GetServerSideProps = wrapper.getServerSideProps(
+//   (store) => async (context) => {
+//     await store.dispatch(
+//       await fetchRefreshToken()
+//     )
+//   }
+// )
 
 export default Layout;

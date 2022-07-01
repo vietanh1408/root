@@ -22,7 +22,9 @@
     "paths": {
       "@/*": ["src/*"],
       "@/interfaces/*": ["./src/interfaces/*"],
-      "@/extensions/*": ["./src/extensions/*"]
+      "@/extensions/*": ["./src/extensions/*"],
+      "@/middleware/*": ["./src/middleware/*"],
+
     }
   },
   "ts-node": {

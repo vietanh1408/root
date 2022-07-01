@@ -10,6 +10,8 @@ const Home = () => {
   );
 };
 
-Home.auth = true;
+Home.defaultProps = {
+  protected: false,
+};
 
 export default Home;

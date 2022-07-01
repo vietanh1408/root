@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response, Router } from 'express'
+import { RequestWithUser } from 'interfaces'
 import { LoginInput, RegisterInput } from 'interfaces/auth.interface'
 import { Controller } from '../../interfaces/controller.interface'
 import { AuthService } from './auth.services'
@@ -20,7 +21,7 @@ class AuthController implements Controller {
   }
 
   private register = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ) => {
@@ -33,7 +34,7 @@ class AuthController implements Controller {
   }
 
   private login = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<Response | undefined> => {
@@ -42,7 +43,7 @@ class AuthController implements Controller {
   }
 
   private loginAdmin = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ): Promise<Response | undefined> => {
@@ -51,7 +52,7 @@ class AuthController implements Controller {
   }
 
   private refreshToken = async (
-    req: Request,
+    req: RequestWithUser,
     res: Response,
     next: NextFunction
   ) => {

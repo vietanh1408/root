@@ -12,6 +12,11 @@ const authAPI = {
     const url = "auth/register";
     return axiosClient.post(url, params);
   },
+
+  refreshToken(refreshToken: string) {
+    const url = "refresh_token";
+    return axiosClient.post(url, refreshToken);
+  },
 };
 
 export default authAPI;

@@ -7,7 +7,7 @@ import { useIsomorphicLayoutEffect } from "src/hooks/useIsomorphicLayoutEffect";
 import { store, wrapper } from "src/redux/store";
 import "../styles/globals.css";
 
-type AppPropsType = AppProps & {
+export type AppPropsType = AppProps & {
   Component: {
     defaultProps: {
       protected: boolean;
@@ -16,22 +16,10 @@ type AppPropsType = AppProps & {
 };
 
 function App(props: AppPropsType) {
-  const { Component } = props;
-  const { isAuthenticated } = useAuthContext();
-  const router = useRouter();
-
-  useIsomorphicLayoutEffect(() => {
-    if (Component.defaultProps?.protected && !isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router, Component.defaultProps]);
-
   return (
     <Provider store={store}>
       <AuthContextProvider>
-        {!(Component.defaultProps?.protected && !isAuthenticated) && (
-          <Layout {...props} />
-        )}
+        <Layout {...props} />
       </AuthContextProvider>
     </Provider>
   );

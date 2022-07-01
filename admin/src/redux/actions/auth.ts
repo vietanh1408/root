@@ -9,6 +9,7 @@ export enum AuthAction {
   REGISTERING = "[authentication] REGISTERING",
   REGISTER_SUCCESS = "[authentication] REGISTER_SUCCESS",
   REGISTER_FAIL = "[authentication] REGISTER_FAIL",
+  REFRESH_TOKEN = "[authentication] REFRESH_TOKEN",
 }
 
 export const fetchLogin = async (value: LoginInput) => {
@@ -24,6 +25,16 @@ export const fetchLogin = async (value: LoginInput) => {
 export const fetchRegister = async (value: RegisterInput) => {
   try {
     const response = await authAPI.register(value);
+
+    return response.data;
+  } catch (e) {
+    return e;
+  }
+};
+
+export const fetchRefreshToken = async (refreshToken: string) => {
+  try {
+    const response = await authAPI.refreshToken(refreshToken);
 
     return response.data;
   } catch (e) {

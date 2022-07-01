@@ -2,7 +2,11 @@ import argon2 from 'argon2'
 import { NextFunction, Request, Response } from 'express'
 import { LoginInput, RegisterInput } from 'interfaces/auth.interface'
 import { TokenList } from 'interfaces/common.interface'
-import { Context, UserAuthPayload } from 'interfaces/context.interface'
+import {
+  Context,
+  RequestWithUser,
+  UserAuthPayload
+} from 'interfaces/context.interface'
 import { Secret, verify } from 'jsonwebtoken'
 import { environments, errorMessages, RoleEnum } from '../../constants'
 import { User } from '../../entities/user.entity'
@@ -20,8 +24,6 @@ export class AuthService {
   ) {
     try {
       const { email, username, password } = input
-
-      console.log('input: ', input)
 
       const existedUsername = await User.findOne({
         where: {
@@ -74,10 +76,10 @@ export class AuthService {
     try {
       const { password, username } = input
 
-      console.log('input: ', input)
+      console.log('username: ', username)
 
       if (!username) {
-        next(new HttpException(400, errorMessages.existedUser))
+        next(new HttpException(400, errorMessages.notFoundUser))
       }
 
       const user: User = await User.findOne({
@@ -86,8 +88,6 @@ export class AuthService {
           role: RoleEnum.Customer
         }
       })
-
-      console.log('user: ', user)
 
       if (!user) {
         next(new HttpException(400, errorMessages.notFoundUser))
@@ -163,7 +163,11 @@ export class AuthService {
   }
 
   // this api using after accessToken expired, client will call this api to get new accessToken and server will response new accessToken
-  public async refreshToken(req: Request, res: Response, next: NextFunction) {
+  public async refreshToken(
+    req: RequestWithUser,
+    res: Response,
+    next: NextFunction
+  ) {
     const refreshTokenFromClient: string = req.body.refreshToken
 
     const context: Context = {
